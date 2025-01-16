@@ -1,0 +1,6 @@
+@Hx.Abp.DataQualityInspection_HostAddress = http://localhost:5268
+
+GET {{Hx.Abp.DataQualityInspection_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
