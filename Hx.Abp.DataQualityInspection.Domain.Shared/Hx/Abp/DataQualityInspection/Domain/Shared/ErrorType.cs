@@ -9,7 +9,7 @@ namespace Hx.Abp.DataQualityInspection.Domain.Shared
     /// <summary>
     /// 错误级别枚举，用于表示质检结果的严重程度。
     /// </summary>
-    public enum ErrorLevel
+    public enum ErrorType
     {
         /// <summary>
         /// 提示性信息，不影响数据质量。

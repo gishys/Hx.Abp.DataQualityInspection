@@ -19,7 +19,7 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore.Hx.Abp.DataQualityIns
             });
             context.Services.AddAbpDbContext<DataQualityInspectionDbContext>(options =>
             {
-                options.AddRepository<QualityInspectionTask, QualityInspectionTaskRepository>();
+                options.AddRepository<QualityInspectionTask, QualityInspectionTask>();
             });
             Configure<AbpDbContextOptions>(options =>
             {

@@ -16,39 +16,19 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore.Hx.Abp.DataQualityIns
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<QualityInspectionTask>(builder =>
             {
-                // 设置表名
-                builder.ToTable("QUALITY_INSPECTION_TASKS"); // 表名也改为大写
-
-                // 配置主键
+                builder.ToTable("QUALITY_INSPECTION_TASKS");
                 builder.HasKey(t => t.Id)
-                       .HasName("PK_QUALITY_INSPECTION_TASKS"); // 主键约束名称
+                       .HasName("PK_QUALITY_INSPECTION_TASKS");
 
-                // 配置 ReportId 属性
-                builder.Property(t => t.Id)
-                       .IsRequired() // ReportId 是必填项
-                       .HasColumnName("ID"); // 数据库字段名改为大写
+                builder.Property(t => t.Id).IsRequired().HasColumnName("ID");
+                builder.Property(t => t.Name).IsRequired().HasMaxLength(255).HasColumnName("NAME");
+                builder.Property(t => t.Status).IsRequired().HasColumnName("STATUS");
+                builder.Property(t => t.CompletedAt).IsRequired(false).HasColumnName("COMPLETED_AT");
 
-                // 配置 Name 属性
-                builder.Property(t => t.Name)
-                       .IsRequired() // Name 是必填项
-                       .HasMaxLength(255) // 设置最大长度
-                       .HasColumnName("NAME"); // 数据库字段名改为大写
-
-                // 配置 Status 属性
-                builder.Property(t => t.Status)
-                       .IsRequired() // Status 是必填项
-                       .HasColumnName("STATUS"); // 数据库字段名改为大写
-
-                // 配置 CompletedAt 属性
-                builder.Property(t => t.CompletedAt)
-                       .IsRequired(false) // CompletedAt 是可选项
-                       .HasColumnName("COMPLETED_AT"); // 数据库字段名改为大写
-
-                // 配置 Reports 属性
-                builder.HasMany(t => t.Reports) // 配置一对多关系
-                       .WithOne() // 假设 QualityInspectionReport 有一个外键指向 QualityInspectionTask
-                       .HasForeignKey("QUALITY_INSPECTION_TASK_ID") // 外键名称改为大写
-                       .OnDelete(DeleteBehavior.Cascade); // 设置级联删除
+                builder.HasMany(t => t.Reports)
+                       .WithOne()
+                       .HasForeignKey("QUALITY_INSPECTION_TASK_REPORTS_ID")
+                       .OnDelete(DeleteBehavior.Cascade);
 
                 builder.ConfigureFullAuditedAggregateRoot();
                 builder.Property(p => p.CreationTime).HasColumnName("CREATIONTIME").HasColumnType("timestamp with time zone");
@@ -60,41 +40,27 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore.Hx.Abp.DataQualityIns
                 builder.Property(p => p.DeletionTime).HasColumnName("DELETIONTIME").HasColumnType("timestamp with time zone");
             });
 
-            modelBuilder.Entity<QualityInspectionReport>(builder =>
+            modelBuilder.Entity<Report>(builder =>
             {
-                // 设置表名
-                builder.ToTable("QUALITY_INSPECTION_REPORTS"); // 表名改为大写
-
-                // 配置主键
+                builder.ToTable("QUALITY_INSPECTION_REPORTS");
                 builder.HasKey(t => t.Id)
-                       .HasName("PK_QUALITY_INSPECTION_REPORTS"); // 主键约束名称
-                                                                  // 配置 ReportId 属性
-                builder.Property(t => t.Id)
-                       .IsRequired() // ReportId 是必填项
-                       .HasColumnName("ID"); // 数据库字段名改为大写
+                       .HasName("PK_QUALITY_INSPECTION_REPORTS");
 
-                // 配置 Rule 属性（假设 QualityInspectionRule 是一个关联实体）
-                builder.HasOne(t => t.Rule) // 配置一对一或多对一关系
-                       .WithMany() // 假设 QualityInspectionRule 有多个 QualityInspectionReport
-                       .HasForeignKey(d=>d.RuleId) // 外键名称改为大写
+                builder.Property(t => t.Id).IsRequired().HasColumnName("ID");
+                builder.Property(t => t.RuleId).IsRequired().HasColumnName("RULEID");
+                builder.Property(t => t.ReportType).IsRequired().HasColumnName("REPORT_TYPE");
+
+                builder.HasOne(t => t.Rule)
+                       .WithMany()
+                       .HasForeignKey(d => d.RuleId)
                        .HasConstraintName("RULE_ID")
-                       .IsRequired(); // Rule 是必填项
+                       .IsRequired();
 
-                // 配置 Results 属性
-                builder.HasMany(t => t.Results) // 配置一对多关系
-                       .WithOne() // 假设 QualityInspectionResultRecord 有一个外键指向 QualityInspectionReport
-                       .HasForeignKey("REPORT_ID") // 外键名称改为大写
-                       .OnDelete(DeleteBehavior.Cascade); // 设置级联删除
-
-                // 配置 Timestamp 属性
-                builder.Property(t => t.Timestamp)
-                       .IsRequired() // Timestamp 是必填项
-                       .HasColumnName("TIMESTAMP"); // 数据库字段名改为大写
-
-                // 配置 ReportType 属性
-                builder.Property(t => t.ReportType)
-                       .IsRequired() // ReportType 是必填项
-                       .HasColumnName("REPORT_TYPE"); // 数据库字段名改为大写
+                builder.HasMany(t => t.Results)
+                       .WithOne()
+                       .HasForeignKey(d=>d.ReportId)
+                       .HasConstraintName("QUALITY_INSPECTION_REPORTS_RESULTS_ID")
+                       .OnDelete(DeleteBehavior.Cascade);
 
                 builder.ConfigureFullAuditedAggregateRoot();
                 builder.Property(p => p.CreationTime).HasColumnName("CREATIONTIME").HasColumnType("timestamp with time zone");
@@ -105,92 +71,30 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore.Hx.Abp.DataQualityIns
                 builder.Property(p => p.DeleterId).HasColumnName("DELETERID");
                 builder.Property(p => p.DeletionTime).HasColumnName("DELETIONTIME").HasColumnType("timestamp with time zone");
             });
-            modelBuilder.Entity<QualityInspectionResultRecord>(builder =>
+            modelBuilder.Entity<ResultRecord>(builder =>
             {
-                // 设置表名
-                builder.ToTable("QUALITY_INSPECTION_RESULT_RECORDS"); // 表名改为大写
-
-                // 配置主键
+                builder.ToTable("QUALITY_INSPECTION_RESULT_RECORDS");
                 builder.HasKey(t => t.Id)
-                       .HasName("PK_QUALITY_INSPECTION_RESULT_RECORDS"); // 主键约束名称
+                       .HasName("PK_QUALITY_INSPECTION_RESULT_RECORDS");
 
-                // 配置 ReportId 属性
-                builder.Property(t => t.Id)
-                       .IsRequired() // ReportId 是必填项
-                       .HasColumnName("ID"); // 数据库字段名改为大写
+                builder.Property(t => t.Id).IsRequired().HasColumnName("ID");
+                builder.Property(t => t.ReportId).IsRequired().HasColumnName("REPORT_ID");
+                builder.Property(t => t.Status).IsRequired().HasColumnName("STATUS");
+                builder.Property(t => t.Description).IsRequired(false).HasMaxLength(1000).HasColumnName("DESCRIPTION");
+                builder.Property(t => t.LocationLayer).IsRequired(false).HasMaxLength(255).HasColumnName("LOCATION_LAYER");
+                builder.Property(t => t.LocationId).IsRequired(false).HasMaxLength(255).HasColumnName("LOCATION_ID");
 
-                // 配置 ReportId 属性
-                builder.Property(t => t.ReportId)
-                       .IsRequired() // ReportId 是必填项
-                       .HasColumnName("REPORT_ID"); // 数据库字段名改为大写
+                builder.Property(t => t.ReferenceLayer).IsRequired(false).HasMaxLength(255).HasColumnName("REFERENCE_LAYER");
+                builder.Property(t => t.ReferenceId).IsRequired(false).HasMaxLength(255).HasColumnName("REFERENCE_ID");
+                builder.Property(t => t.Shape).IsRequired(false).HasColumnName("SHAPE");
+                builder.Property(t => t.RuleId).IsRequired().HasColumnName("RULE_ID");
+                builder.Property(t => t.Geometry).IsRequired(false).HasColumnName("GEOMETRY");
 
-                // 配置 Status 属性
-                builder.Property(t => t.Status)
-                       .IsRequired() // Status 是必填项
-                       .HasColumnName("STATUS"); // 数据库字段名改为大写
-
-                // 配置 Description 属性
-                builder.Property(t => t.Description)
-                       .IsRequired() // Description 是必填项
-                       .HasMaxLength(1000) // 设置最大长度
-                       .HasColumnName("DESCRIPTION"); // 数据库字段名改为大写
-
-                // 配置 LocationLayer 属性
-                builder.Property(t => t.LocationLayer)
-                       .IsRequired() // LocationLayer 是必填项
-                       .HasMaxLength(255) // 设置最大长度
-                       .HasColumnName("LOCATION_LAYER"); // 数据库字段名改为大写
-
-                // 配置 LocationId 属性
-                builder.Property(t => t.LocationId)
-                       .IsRequired() // LocationId 是必填项
-                       .HasMaxLength(255) // 设置最大长度
-                       .HasColumnName("LOCATION_ID"); // 数据库字段名改为大写
-
-                // 配置 ReferenceLayer 属性
-                builder.Property(t => t.ReferenceLayer)
-                       .IsRequired(false) // ReferenceLayer 是可选项
-                       .HasMaxLength(255) // 设置最大长度
-                       .HasColumnName("REFERENCE_LAYER"); // 数据库字段名改为大写
-
-                // 配置 ReferenceId 属性
-                builder.Property(t => t.ReferenceId)
-                       .IsRequired(false) // ReferenceId 是可选项
-                       .HasMaxLength(255) // 设置最大长度
-                       .HasColumnName("REFERENCE_ID"); // 数据库字段名改为大写
-
-                // 配置 Shape 属性
-                builder.Property(t => t.Shape)
-                       .IsRequired() // Shape 是必填项
-                       .HasColumnName("SHAPE"); // 数据库字段名改为大写
-
-                // 配置 RuleId 属性
-                builder.Property(t => t.RuleId)
-                       .IsRequired() // RuleId 是必填项
-                       .HasMaxLength(255) // 设置最大长度
-                       .HasColumnName("RULE_ID"); // 数据库字段名改为大写
-
-                // 配置 RuleKey 属性
-                builder.Property(t => t.RuleKey)
-                       .IsRequired() // RuleKey 是必填项
-                       .HasMaxLength(255) // 设置最大长度
-                       .HasColumnName("RULE_KEY"); // 数据库字段名改为大写
-
-                // 配置 RuleTitle 属性
-                builder.Property(t => t.RuleTitle)
-                       .IsRequired() // RuleTitle 是必填项
-                       .HasMaxLength(255) // 设置最大长度
-                       .HasColumnName("RULE_TITLE"); // 数据库字段名改为大写
-
-                // 配置 ErrorLevel 属性
-                builder.Property(t => t.ErrorLevel)
-                       .IsRequired() // ErrorLevel 是必填项
-                       .HasColumnName("ERROR_LEVEL"); // 数据库字段名改为大写
-
-                // 配置 Geometry 属性
-                builder.Property(t => t.Geometry)
-                       .IsRequired(false) // Geometry 是可选项
-                       .HasColumnName("GEOMETRY"); // 数据库字段名改为大写
+                builder.HasOne(d => d.Rule)
+                .WithMany()
+                .HasForeignKey(d => d.RuleId)
+                .HasConstraintName("QUALITY_INSPECTION_RESULT_RECORDS_RULE_ID")
+                .OnDelete(DeleteBehavior.Cascade);
 
                 builder.ConfigureFullAuditedAggregateRoot();
                 builder.Property(p => p.CreationTime).HasColumnName("CREATIONTIME").HasColumnType("timestamp with time zone");
@@ -200,6 +104,56 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore.Hx.Abp.DataQualityIns
                 builder.Property(p => p.IsDeleted).HasColumnName("ISDELETED");
                 builder.Property(p => p.DeleterId).HasColumnName("DELETERID");
                 builder.Property(p => p.DeletionTime).HasColumnName("DELETIONTIME").HasColumnType("timestamp with time zone");
+            });
+
+            modelBuilder.Entity<Rule>(builder =>
+            {
+                builder.ToTable("QUALITY_INSPECTION_RULES");
+                builder.HasKey(t => t.Id).HasName("PK_QUALITY_INSPECTION_RULES");
+
+                builder.Property(t => t.Id).IsRequired().HasColumnName("ID");
+                builder.Property(t => t.RuleName).IsRequired().HasMaxLength(255).HasColumnName("RULENAME");
+                builder.Property(t => t.Title).HasMaxLength(255).IsRequired().HasColumnName("TITLE");
+                builder.Property(t => t.Description).HasMaxLength(500).IsRequired(false).HasColumnName("DESCRIPTION");
+                builder.Property(t => t.SuccessEvent).HasMaxLength(255).IsRequired(false).HasColumnName("SUCCESSEVENT");
+
+                builder.Property(t => t.ErrorType).IsRequired().HasColumnName("ERRORTYPE");
+                builder.Property(t => t.ErrorMessage).HasMaxLength(255).IsRequired().HasColumnName("ERRORMESSAGE");
+                builder.Property(t => t.RuleExpressionType).IsRequired().HasColumnName("RULEEXPRESSIONTYPE");
+                builder.Property(t => t.Expression).HasMaxLength(500).IsRequired(false).HasColumnName("EXPRESSION");
+
+                builder.HasMany(t => t.Children)
+                .WithOne()
+                .HasForeignKey("QUALITY_INSPECTION_RULE_CHILDREN_ID")
+                .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasMany(t => t.Constraints)
+                .WithOne()
+                .HasForeignKey(d => d.RuleId)
+                .HasConstraintName("QUALITY_INSPECTION_RULE_CONSTRAINTS_ID")
+                .OnDelete(DeleteBehavior.Cascade);
+
+                builder.ConfigureFullAuditedAggregateRoot();
+                builder.Property(p => p.CreationTime).HasColumnName("CREATIONTIME").HasColumnType("timestamp with time zone");
+                builder.Property(p => p.CreatorId).HasColumnName("CREATORID");
+                builder.Property(p => p.LastModificationTime).HasColumnName("LASTMODIFICATIONTIME").HasColumnType("timestamp with time zone");
+                builder.Property(p => p.LastModifierId).HasColumnName("LASTMODIFIERID");
+                builder.Property(p => p.IsDeleted).HasColumnName("ISDELETED");
+                builder.Property(p => p.DeleterId).HasColumnName("DELETERID");
+                builder.Property(p => p.DeletionTime).HasColumnName("DELETIONTIME").HasColumnType("timestamp with time zone");
+            });
+
+            modelBuilder.Entity<RuleConstraints>(builder =>
+            {
+                builder.ToTable("QUALITY_INSPECTION_RULECONSTRAINTS");
+                builder.HasKey(t => t.Id)
+                       .HasName("PK_QUALITY_INSPECTION_RULECONSTRAINTS");
+
+                builder.Property(t => t.Id).IsRequired().HasColumnName("ID");
+                builder.Property(t => t.Name).IsRequired().HasMaxLength(255).HasColumnName("NAME");
+                builder.Property(t => t.Title).IsRequired().HasMaxLength(255).HasColumnName("TITLE");
+                builder.Property(t => t.RuleId).IsRequired().HasColumnName("RULEID");
+                builder.Property(t => t.Expression).IsRequired(false).HasMaxLength(500).HasColumnName("EXPRESSION");
             });
         }
     }

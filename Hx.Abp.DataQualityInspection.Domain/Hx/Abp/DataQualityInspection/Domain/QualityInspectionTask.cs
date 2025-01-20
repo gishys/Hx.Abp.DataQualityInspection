@@ -1,4 +1,5 @@
-﻿using Volo.Abp.Domain.Entities.Auditing;
+﻿using Hx.Abp.DataQualityInspection.Domain.Shared;
+using Volo.Abp.Domain.Entities.Auditing;
 
 namespace Hx.Abp.DataQualityInspection.Domain
 {
@@ -16,7 +17,7 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <summary>
         /// 任务执行状态。
         /// </summary>
-        public TaskStatus Status { get; private set; }
+        public QualityInspectionTaskStatus Status { get; private set; }
 
         /// <summary>
         /// 任务完成时间（可选）。
@@ -26,14 +27,14 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <summary>
         /// 质检报告记录列表。
         /// </summary>
-        public List<QualityInspectionReport> Reports { get; private set; }
+        public List<Report> Reports { get; private set; }
 
         /// <summary>
         /// 无参构造函数，用于支持默认初始化。
         /// </summary>
         public QualityInspectionTask()
         {
-            this.Reports = new List<QualityInspectionReport>();
+            this.Reports = new List<Report>();
         }
 
         /// <summary>
@@ -43,11 +44,12 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <param name="name">任务名称。</param>
         /// <param name="status">任务执行状态。</param>
         /// <param name="createdAt">任务创建时间。</param>
-        public QualityInspectionTask(string name, TaskStatus status)
+        public QualityInspectionTask(Guid id,string name)
         {
+            this.Id = id;
             this.Name = name;
-            this.Status = status;
-            this.Reports = new List<QualityInspectionReport>();
+            this.Status = QualityInspectionTaskStatus.NotStarted;
+            this.Reports = new List<Report>();
         }
 
         /// <summary>
@@ -60,18 +62,18 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// 设置任务执行状态。
         /// </summary>
         /// <param name="status">任务执行状态。</param>
-        public void SetStatus(TaskStatus status) => this.Status = status;
+        public void SetStatus(QualityInspectionTaskStatus status) => this.Status = status;
 
         /// <summary>
         /// 设置任务完成时间。
         /// </summary>
         /// <param name="completedAt">任务完成时间。</param>
-        public void SetCompletedAt(DateTime? completedAt) => this.CompletedAt = completedAt;
+        public void SetCompletedAt(DateTime completedAt) => this.CompletedAt = completedAt;
 
         /// <summary>
         /// 设置质检报告记录列表。
         /// </summary>
         /// <param name="reports">质检报告记录列表。</param>
-        public void SetReports(List<QualityInspectionReport> reports) => this.Reports = reports;
+        public void SetReports(List<Report> reports) => this.Reports = reports;
     }
 }

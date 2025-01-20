@@ -1,11 +1,11 @@
-﻿using Volo.Abp.Domain.Entities.Auditing;
+﻿using Volo.Abp.Domain.Entities;
 
 namespace Hx.Abp.DataQualityInspection.Domain
 {
     /// <summary>
-    /// 质量检查规则条件，表示规则的约束条件。
+    /// 质量检查规则条件，表示规则的约束条件或参数。
     /// </summary>
-    public class QualityInspectionRuleConstraints : FullAuditedEntity<Guid>
+    public class RuleConstraints : Entity<Guid>
     {
         /// <summary>
         /// 规则Id
@@ -22,26 +22,28 @@ namespace Hx.Abp.DataQualityInspection.Domain
         public string Title { get; private set; }
 
         /// <summary>
-        /// 条件值，可以是字符串、数字或布尔值。
+        /// 条件表达式，可以是字符串、数字或布尔值。
         /// </summary>
-        public object Value { get; private set; }
+        public string? Expression { get; private set; }
 
         /// <summary>
         /// 无参构造函数，用于支持默认初始化。
         /// </summary>
-        public QualityInspectionRuleConstraints() { }
+        public RuleConstraints() { }
 
         /// <summary>
         /// 带参构造函数，用于初始化 QualityInspectionRuleConstraints 对象。
         /// </summary>
+        /// <param name="id">规则唯一标识符。</param>
         /// <param name="name">条件名称。</param>
         /// <param name="title">条件标题。</param>
-        /// <param name="value">条件值。</param>
-        public QualityInspectionRuleConstraints(string name, string title, object value)
+        /// <param name="expression">条件表达式。</param>
+        public RuleConstraints(Guid id,string name, string title, string? expression)
         {
+            this.Id = id;
             this.Name = name;
             this.Title = title;
-            this.Value = value;
+            this.Expression = expression;
         }
 
         /// <summary>
@@ -57,9 +59,9 @@ namespace Hx.Abp.DataQualityInspection.Domain
         public void SetTitle(string title) => this.Title = title;
 
         /// <summary>
-        /// 设置条件值。
+        /// 设置条件表达式。
         /// </summary>
-        /// <param name="value">条件值。</param>
-        public void SetValue(object value) => this.Value = value;
+        /// <param name="expression">条件表达式。</param>
+        public void SetValue(string? expression) => this.Expression = expression;
     }
 }

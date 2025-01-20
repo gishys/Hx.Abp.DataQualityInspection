@@ -9,7 +9,7 @@ namespace Hx.Abp.DataQualityInspection.Domain.Shared
     /// <summary>
     /// 任务状态枚举，用于表示质检任务的执行状态。
     /// </summary>
-    public enum TaskStatus
+    public enum QualityInspectionTaskStatus
     {
         /// <summary>
         /// 未开始：任务已创建，但尚未开始执行。

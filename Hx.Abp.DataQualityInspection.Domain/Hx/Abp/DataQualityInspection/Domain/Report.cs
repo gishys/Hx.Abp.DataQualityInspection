@@ -6,13 +6,12 @@ namespace Hx.Abp.DataQualityInspection.Domain
     /// <summary>
     /// 质量检查报告，表示一次质检任务的结果汇总。
     /// </summary>
-    public class QualityInspectionReport: FullAuditedEntity<Guid>
+    public class Report: FullAuditedEntity<Guid>
     {
-
         /// <summary>
         /// 关联的质检规则。
         /// </summary>
-        public QualityInspectionRule Rule { get;private set; }
+        public Rule Rule { get;private set; }
 
         /// <summary>
         /// 规则Id
@@ -22,12 +21,7 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <summary>
         /// 质检结果记录列表。
         /// </summary>
-        public List<QualityInspectionResultRecord> Results { get; private set; }
-
-        /// <summary>
-        /// 报告生成时间。
-        /// </summary>
-        public DateTime Timestamp { get; private set; }
+        public List<ResultRecord> Results { get; private set; }
 
         /// <summary>
         /// 报告类型。
@@ -37,9 +31,9 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <summary>
         /// 无参构造函数，用于支持默认初始化。
         /// </summary>
-        public QualityInspectionReport()
+        public Report()
         {
-            this.Results = new List<QualityInspectionResultRecord>();
+            this.Results = new List<ResultRecord>();
         }
 
         /// <summary>
@@ -47,33 +41,26 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// </summary>
         /// <param name="id">报告唯一标识符。</param>
         /// <param name="rule">关联的质检规则。</param>
-        /// <param name="timestamp">报告生成时间。</param>
         /// <param name="reportType">报告类型。</param>
-        public QualityInspectionReport(QualityInspectionRule rule, DateTime timestamp, InspectionReportType reportType)
+        public Report(Guid id,Rule rule, InspectionReportType reportType)
         {
+            this.Id = id;
             this.Rule = rule;
-            this.Timestamp = timestamp;
             this.ReportType = reportType;
-            this.Results = new List<QualityInspectionResultRecord>();
+            this.Results = new List<ResultRecord>();
         }
 
         /// <summary>
         /// 设置关联的质检规则。
         /// </summary>
         /// <param name="rule">质检规则。</param>
-        public void SetRule(QualityInspectionRule rule) => this.Rule = rule;
+        public void SetRule(Rule rule) => this.Rule = rule;
 
         /// <summary>
         /// 设置质检结果记录列表。
         /// </summary>
         /// <param name="results">质检结果记录列表。</param>
-        public void SetResults(List<QualityInspectionResultRecord> results) => this.Results = results;
-
-        /// <summary>
-        /// 设置报告生成时间。
-        /// </summary>
-        /// <param name="timestamp">报告生成时间。</param>
-        public void SetTimestamp(DateTime timestamp) => this.Timestamp = timestamp;
+        public void SetResults(List<ResultRecord> results) => this.Results = results;
 
         /// <summary>
         /// 设置报告类型。
