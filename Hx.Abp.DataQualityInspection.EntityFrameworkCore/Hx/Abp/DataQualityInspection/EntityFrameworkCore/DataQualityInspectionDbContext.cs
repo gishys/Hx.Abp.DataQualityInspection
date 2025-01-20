@@ -53,7 +53,7 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore.Hx.Abp.DataQualityIns
                 builder.HasOne(t => t.Rule)
                        .WithMany()
                        .HasForeignKey(d => d.RuleId)
-                       .HasConstraintName("RULE_ID")
+                       .HasConstraintName("QUALITY_INSPECTION_REPORTS_RULE_ID")
                        .IsRequired();
 
                 builder.HasMany(t => t.Results)
