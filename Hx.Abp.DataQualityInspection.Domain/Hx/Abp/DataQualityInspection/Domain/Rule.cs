@@ -8,6 +8,15 @@ namespace Hx.Abp.DataQualityInspection.Domain
     /// </summary>
     public class Rule : FullAuditedEntity<Guid>
     {
+        /// <summary>
+        /// 父节点Id。
+        /// </summary>
+        public Guid RuleGroupId { get;private set; }
+
+        /// <summary>
+        /// 规则组模板Id。
+        /// </summary>
+        public Guid? RuleGroupTemplateId { get; private set; }
 
         /// <summary>
         /// 规则键值，用于唯一标识规则。
@@ -18,6 +27,11 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// 规则标题，用于描述规则内容。
         /// </summary>
         public string Title { get; private set; }
+
+        /// <summary>
+        /// 规则类型。
+        /// </summary>
+        public RuleType RuleType { get; private set; }
 
         /// <summary>
         /// 规则描述，提供规则的详细信息（可选）。
@@ -32,22 +46,17 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <summary>
         /// 规则对应的错误级别。
         /// </summary>
-        public ErrorType ErrorType { get; private set; }
+        public ErrorType? ErrorType { get; private set; }
 
         /// <summary>
         /// 错误描述。
         /// </summary>
-        public string ErrorMessage {  get; private set; }
+        public string? ErrorMessage {  get; private set; }
 
         /// <summary>
         /// 表达式的类型。
         /// </summary>
-        public RuleExpressionType RuleExpressionType { get; private set; }
-
-        /// <summary>
-        /// 规则约束条件列表（可选）。
-        /// </summary>
-        public List<RuleConstraints> Constraints { get; private set; }
+        public RuleExpressionType? RuleExpressionType { get; private set; }
 
         /// <summary>
         /// 表达式。
@@ -55,9 +64,9 @@ namespace Hx.Abp.DataQualityInspection.Domain
         public string? Expression { get; private set; }
 
         /// <summary>
-        /// 子规则列表，支持规则的嵌套（可选）。
+        /// 规则约束条件列表（可选）。
         /// </summary>
-        public List<Rule> Children { get; private set; }
+        public List<RuleConstraints> Constraints { get; private set; }
 
         /// <summary>
         /// 无参构造函数，用于支持默认初始化。
@@ -65,7 +74,6 @@ namespace Hx.Abp.DataQualityInspection.Domain
         public Rule()
         {
             this.Constraints = new List<RuleConstraints>();
-            this.Children = new List<Rule>();
         }
 
         /// <summary>
@@ -74,17 +82,29 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <param name="id">规则唯一标识符。</param>
         /// <param name="ruleName">规则键值。</param>
         /// <param name="title">规则标题。</param>
+        /// <param name="ruleType">规则类型。</param>
         /// <param name="successEvent">标识规则执行结果。</param>
         /// <param name="description">规则描述。</param>
         /// <param name="errorType">规则对应的错误级别。</param>
         /// <param name="errorMessage">错误描述。</param>
         /// <param name="ruleExpressionType">表达式类型。</param>
         /// <param name="expression">表达式。</param>
-        public Rule(Guid id, string ruleName, string title, ErrorType errorType, string errorMessage, RuleExpressionType ruleExpressionType, string? expression = null, string? successEvent = null, string? description = null)
+        public Rule(
+            Guid id,
+            string ruleName,
+            string title,
+            RuleType ruleType,
+            ErrorType? errorType = null,
+            string? errorMessage = null,
+            RuleExpressionType? ruleExpressionType = null,
+            string? expression = null,
+            string? successEvent = null,
+            string? description = null)
         {
             this.Id = id;
             this.RuleName = ruleName;
             this.Title = title;
+            this.RuleType = ruleType;
             this.SuccessEvent = successEvent;
             this.ErrorType = errorType;
             this.Description = description;
@@ -92,7 +112,6 @@ namespace Hx.Abp.DataQualityInspection.Domain
             this.RuleExpressionType = ruleExpressionType;
             this.Expression = expression;
             this.Constraints = new List<RuleConstraints>();
-            this.Children = new List<Rule>();
         }
 
         /// <summary>
@@ -148,11 +167,5 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// </summary>
         /// <param name="constraints">约束条件列表。</param>
         public void SetConstraints(List<RuleConstraints> constraints) => this.Constraints = constraints;
-
-        /// <summary>
-        /// 设置子规则列表。
-        /// </summary>
-        /// <param name="children">子规则列表。</param>
-        public void SetChildren(List<Rule> children) => this.Children = children;
     }
 }

@@ -38,7 +38,7 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <param name="name">条件名称。</param>
         /// <param name="title">条件标题。</param>
         /// <param name="expression">条件表达式。</param>
-        public RuleConstraints(Guid id,string name, string title, string? expression)
+        public RuleConstraints(Guid id, string name, string title, string? expression = null)
         {
             this.Id = id;
             this.Name = name;

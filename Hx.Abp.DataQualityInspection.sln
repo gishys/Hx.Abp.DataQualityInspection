@@ -5,11 +5,13 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Abp.DataQualityInspection", "Hx.Abp.DataQualityInspection\Hx.Abp.DataQualityInspection.csproj", "{32679D19-1F12-4FA5-A4FA-FF27C4354EB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Abp.DataQualityInspection.Domain", "Hx.Abp.DataQualityInspection.Domain\Hx.Abp.DataQualityInspection.Domain.csproj", "{A3480E33-B94D-42B2-AB9D-6768783A022F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Abp.DataQualityInspection.Domain", "Hx.Abp.DataQualityInspection.Domain\Hx.Abp.DataQualityInspection.Domain.csproj", "{A3480E33-B94D-42B2-AB9D-6768783A022F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Abp.DataQualityInspection.Domain.Shared", "Hx.Abp.DataQualityInspection.Domain.Shared\Hx.Abp.DataQualityInspection.Domain.Shared.csproj", "{80C88358-1C51-4EC4-AF5D-39B99349B0DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Abp.DataQualityInspection.Domain.Shared", "Hx.Abp.DataQualityInspection.Domain.Shared\Hx.Abp.DataQualityInspection.Domain.Shared.csproj", "{80C88358-1C51-4EC4-AF5D-39B99349B0DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Abp.DataQualityInspection.EntityFrameworkCore", "Hx.Abp.DataQualityInspection.EntityFrameworkCore\Hx.Abp.DataQualityInspection.EntityFrameworkCore.csproj", "{D3A1C5CF-1E45-4C2A-942F-8913C979863D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Abp.DataQualityInspection.EntityFrameworkCore", "Hx.Abp.DataQualityInspection.EntityFrameworkCore\Hx.Abp.DataQualityInspection.EntityFrameworkCore.csproj", "{D3A1C5CF-1E45-4C2A-942F-8913C979863D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Abp.DataQualityInspection.Migrations", "Hx.Abp.DataQualityInspection.Migrations\Hx.Abp.DataQualityInspection.Migrations.csproj", "{00A6F64F-B477-4DB9-9163-E425F2B4872D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D3A1C5CF-1E45-4C2A-942F-8913C979863D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3A1C5CF-1E45-4C2A-942F-8913C979863D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3A1C5CF-1E45-4C2A-942F-8913C979863D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00A6F64F-B477-4DB9-9163-E425F2B4872D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A6F64F-B477-4DB9-9163-E425F2B4872D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A6F64F-B477-4DB9-9163-E425F2B4872D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A6F64F-B477-4DB9-9163-E425F2B4872D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

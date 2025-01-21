@@ -251,15 +251,9 @@ paket-files/
 .idea/
 *.sln.iml
 
-# BgApp
-src/Hx.BgApp.Web/Logs/*
-src/Hx.BgApp.Web.Host/Logs/*
-src/Hx.BgApp.AuthServer/Logs/*
-src/Hx.BgApp.HttpApi.Host/Logs/*
-src/Hx.BgApp.HttpApi.HostWithIds/Logs/*
-src/Hx.BgApp.DbMigrator/Logs/*
-src/Hx.BgApp.Blazor/Logs/*
-src/Hx.BgApp.Blazor.Tiered/Logs/*
+# data quality inspection
+Hx.Abp.DataQualityInspection/Logs/*
+Hx.Abp.DataQualityInspection.Migrations/Migrations/*
 
 # Use abp install-libs to restore.
 **/wwwroot/libs/*

@@ -1,10 +1,11 @@
 ﻿using Hx.Abp.DataQualityInspection.Domain;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;
 
-namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore.Hx.Abp.DataQualityInspection.EntityFrameworkCore
+namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
 {
     [DependsOn(typeof(AbpEntityFrameworkCoreModule))]
     [DependsOn(typeof(AbpEntityFrameworkCorePostgreSqlModule))]
@@ -23,7 +24,10 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore.Hx.Abp.DataQualityIns
             });
             Configure<AbpDbContextOptions>(options =>
             {
-                options.UseNpgsql();
+                options.UseNpgsql(options =>
+                {
+                    options.UseNetTopologySuite();
+                });
             });
         }
     }
