@@ -6,14 +6,17 @@ namespace Hx.Abp.DataQualityInspection.Application
     public class RuleGroupAppService : DataQualityInspectionAppServiceBase
     {
         public IRuleGroupRepository RuleGroupRepository { get; }
-        public RuleGroupAppService(IRuleGroupRepository ruleGroupRepository)
+        public RuleGroupManager RuleGroupManager { get; }
+        public RuleGroupAppService(IRuleGroupRepository ruleGroupRepository, RuleGroupManager ruleGroupManager)
         {
             RuleGroupRepository = ruleGroupRepository;
+            RuleGroupManager = ruleGroupManager;
         }
         public async virtual Task CreateAsync(RuleGroupCreateDto dto)
         {
-            //计算顺序与路径枚举
-            var entity = new RuleGroup(GuidGenerator.Create(), dto.Title, "", 1, dto.Description);
+            //路径枚举
+            var orderNumber = await RuleGroupManager.GetMaxOrderNumberAsync(dto.ParentId);
+            var entity = new RuleGroup(GuidGenerator.Create(), dto.Title, "", orderNumber, dto.Description);
             if (dto.ParentId.HasValue)
             {
                 var parentEntity = await RuleGroupRepository.GetAsync(dto.ParentId.Value);
