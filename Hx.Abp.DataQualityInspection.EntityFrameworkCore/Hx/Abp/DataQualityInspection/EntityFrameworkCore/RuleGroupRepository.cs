@@ -13,6 +13,15 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
         {
         }
         /// <summary>
+        /// 通过id获取实体携带children
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public virtual async Task<RuleGroup?> GetByIdAsync(Guid id)
+        {
+            return await (await GetDbSetAsync()).Include(d => d.Children).FirstOrDefaultAsync(x => x.Id == id);
+        }
+        /// <summary>
         /// 获取某分类最大排序值
         /// </summary>
         /// <param name="parentId"></param>
@@ -20,9 +29,15 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
         public virtual async Task<double> GetMaxOrderNumberAsync(Guid? parentId)
         {
             var dbSet = await GetDbSetAsync();
-            double maxNumber = await dbSet
-                .Where(d => d.ParentId == parentId)
-                .MaxAsync(d => d.Order);
+            var query = dbSet
+                .Where(d => d.ParentId == parentId);
+            if (!await query.AnyAsync().ConfigureAwait(false))
+            {
+                return 0;
+            }
+            double maxNumber = await query
+                .MaxAsync(d => d.Order)
+                .ConfigureAwait(false);
             return maxNumber;
         }
         /// <summary>
@@ -39,7 +54,7 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
                 .ToListAsync();
             if (codes.Count == 0)
             {
-                return RuleGroup.CreateCode([1]);
+                return RuleGroup.CreateCode([0]);
             }
             string? maxCode = codes
                 .OrderByDescending(code =>
@@ -54,7 +69,7 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
                 .FirstOrDefault();
             if (string.IsNullOrEmpty(maxCode))
             {
-                return RuleGroup.CreateCode([1]);
+                return RuleGroup.CreateCode([0]);
             }
             return maxCode;
         }
@@ -65,33 +80,19 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
         public async Task<List<RuleGroup>> GetAllWithChildrenAsync()
         {
             var sql = @"
-        WITH RecursiveGroups AS (
-            SELECT * FROM QI_RULEGROUPS WHERE PARENT_ID IS NULL
-            UNION ALL
-            SELECT g.* FROM QI_RULEGROUPS g
-            INNER JOIN RecursiveGroups rg ON g.PARENT_ID = rg.ID
-        )
-        SELECT * FROM RecursiveGroups
-        ";
+    WITH RECURSIVE RecursiveGroups AS (
+        SELECT * FROM ""QI_RULE_GROUPS"" WHERE ""PARENT_ID"" IS NULL
+        UNION ALL
+        SELECT g.* FROM ""QI_RULE_GROUPS"" g
+        INNER JOIN RecursiveGroups rg ON g.""PARENT_ID"" = rg.""ID""
+    )
+    SELECT * FROM RecursiveGroups
+";
             var dbSet = await GetDbSetAsync();
-            List<RuleGroup> groups = await dbSet.FromSqlRaw(sql).Include(d => d.Rules).ThenInclude(d => d.Constraints).ToListAsync();
-            var groupMap = groups.ToDictionary(g => g.Id);
-            var result = new List<RuleGroup>();
-            foreach (var group in groups)
-            {
-                if (group.ParentId == null)
-                {
-                    result.Add(group);
-                }
-                else
-                {
-                    if (groupMap.TryGetValue(group.ParentId.Value, out var parent))
-                    {
-                        parent.AddChildren(group);
-                    }
-                }
-            }
-            return result;
+            List<RuleGroup> groups = await dbSet.FromSqlRaw(sql)
+                .Include(d => d.Rules)
+                .ThenInclude(d => d.Constraints).ToListAsync();
+            return groups.Where(d => d.ParentId == null).ToList();
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <param name="id">报告唯一标识符。</param>
         /// <param name="rule">关联的质检规则。</param>
         /// <param name="reportType">报告类型。</param>
-        public Report(Guid id,Rule rule, InspectionReportType reportType)
+        public Report(Guid id, Rule rule, InspectionReportType reportType)
         {
             this.Id = id;
             this.Rule = rule;

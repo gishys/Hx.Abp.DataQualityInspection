@@ -1,5 +1,6 @@
 ﻿using Hx.Abp.DataQualityInspection.Application.Contracts;
 using Hx.Abp.DataQualityInspection.Domain;
+using Volo.Abp;
 
 namespace Hx.Abp.DataQualityInspection.Application
 {
@@ -19,8 +20,9 @@ namespace Hx.Abp.DataQualityInspection.Application
             var entity = new RuleGroup(GuidGenerator.Create(), dto.Title, code, orderNumber, dto.Description);
             if (dto.ParentId.HasValue)
             {
-                var parentEntity = await RuleGroupRepository.GetAsync(dto.ParentId.Value);
-                parentEntity.Children.AddLast(entity);
+                var parentEntity = await RuleGroupRepository.GetByIdAsync(dto.ParentId.Value);
+                if (parentEntity == null) throw new UserFriendlyException("未查询到父节点！");
+                parentEntity.AddChildren(entity);
                 await RuleGroupRepository.UpdateAsync(parentEntity);
             }
             else
@@ -45,6 +47,11 @@ namespace Hx.Abp.DataQualityInspection.Application
         {
             await RuleGroupRepository.DeleteAsync(id);
         }
-
+        public async virtual Task<List<RuleGroupDto>> GetAllWithChildrenAsync()
+        {
+            List<RuleGroup> list = await RuleGroupRepository.GetAllWithChildrenAsync();
+            list = list.OrderBy(x => x.Order).ToList();
+            return ObjectMapper.Map<List<RuleGroup>, List<RuleGroupDto>>(list);
+        }
     }
 }

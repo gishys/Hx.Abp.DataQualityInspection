@@ -137,9 +137,9 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
 
             modelBuilder.Entity<RuleConstraints>(builder =>
             {
-                builder.ToTable("QI_RULECONSTRAINTS");
+                builder.ToTable("QI_RULE_CONSTRAINTS");
                 builder.HasKey(t => t.Id)
-                       .HasName("PK_QI_RULECONSTRAINTS");
+                       .HasName("PK_QI_RULE_CONSTRAINTS");
 
                 builder.Property(t => t.Id).IsRequired().HasColumnName("ID");
                 builder.Property(t => t.Name).IsRequired().HasMaxLength(255).HasColumnName("NAME");
@@ -150,9 +150,9 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
 
             modelBuilder.Entity<RuleGroupTemplate>(builder =>
             {
-                builder.ToTable("QI_RULEGROUPTEMPLATES");
+                builder.ToTable("QI_RULE_GROUP_TEMPLATES");
                 builder.HasKey(t => t.Id)
-                       .HasName("PK_RULEGROUPTEMPLATES_REPORTS");
+                       .HasName("PK_RULE_GROUP_TEMPLATES_REPORTS");
 
                 builder.Property(t => t.Id).IsRequired().HasColumnName("ID");
                 builder.Property(t => t.Title).IsRequired().HasMaxLength(255).HasColumnName("TITLE");
@@ -161,7 +161,7 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
                 builder.HasMany(t => t.Rules)
                        .WithOne()
                        .HasForeignKey(d => d.RuleGroupTemplateId)
-                       .HasConstraintName("QI_RULEGROUPTEMPLATES_RULE_ID")
+                       .HasConstraintName("QI_RULE_GROUP_TEMPLATES_RULE_ID")
                        .OnDelete(DeleteBehavior.Cascade);
 
                 builder.ConfigureFullAuditedAggregateRoot();
@@ -176,9 +176,9 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
 
             modelBuilder.Entity<RuleGroup>(builder =>
             {
-                builder.ToTable("QI_RULEGROUPS");
+                builder.ToTable("QI_RULE_GROUPS");
                 builder.HasKey(t => t.Id)
-                       .HasName("PK_RULEGROUPS_REPORTS");
+                       .HasName("PK_RULE_GROUPS_REPORTS");
 
                 builder.Property(t => t.Id).IsRequired().HasColumnName("ID");
                 builder.Property(t => t.Title).IsRequired().HasMaxLength(255).HasColumnName("TITLE");
@@ -190,13 +190,13 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
                 builder.HasMany(t => t.Rules)
                        .WithOne()
                        .HasForeignKey(d => d.RuleGroupId)
-                       .HasConstraintName("QI_RULEGROUPS_RULE_ID")
+                       .HasConstraintName("QI_RULE_GROUPS_RULE_ID")
                        .OnDelete(DeleteBehavior.Cascade);
 
                 builder.HasMany(t => t.Children)
                        .WithOne()
                        .HasForeignKey(d => d.ParentId)
-                       .HasConstraintName("QI_RULEGROUPS_PARENT_ID")
+                       .HasConstraintName("QI_RULE_GROUPS_PARENT_ID")
                        .OnDelete(DeleteBehavior.Cascade);
 
                 builder.ConfigureFullAuditedAggregateRoot();

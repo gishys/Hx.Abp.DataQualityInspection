@@ -6,6 +6,7 @@ using Volo.Abp.Modularity;
 
 namespace Hx.Abp.DataQualityInspection.Application
 {
+    [DependsOn(typeof(AbpAutoMapperModule))]
     [DependsOn(typeof(AbpDddApplicationModule))]
     [DependsOn(typeof(HxAbpDataQualityInspectionDomainModule))]
     public class HxAbpDataQualityInspectionApplicationModule : AbpModule

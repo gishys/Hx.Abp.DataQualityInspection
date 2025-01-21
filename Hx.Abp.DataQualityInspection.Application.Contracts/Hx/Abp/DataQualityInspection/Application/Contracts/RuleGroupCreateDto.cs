@@ -11,6 +11,6 @@ namespace Hx.Abp.DataQualityInspection.Application.Contracts
         /// <summary>
         /// 父Id
         /// </summary>
-        public Guid? ParentId { get; protected set; }
+        public Guid? ParentId { get; set; }
     }
 }

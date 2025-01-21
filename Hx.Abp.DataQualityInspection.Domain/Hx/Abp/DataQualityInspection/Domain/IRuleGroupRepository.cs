@@ -5,6 +5,12 @@ namespace Hx.Abp.DataQualityInspection.Domain
     public interface IRuleGroupRepository : IBasicRepository<RuleGroup, Guid>
     {
         /// <summary>
+        /// 通过id获取实体携带children
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<RuleGroup?> GetByIdAsync(Guid id);
+        /// <summary>
         /// 获取某分类最大排序值
         /// </summary>
         /// <param name="parentId"></param>
