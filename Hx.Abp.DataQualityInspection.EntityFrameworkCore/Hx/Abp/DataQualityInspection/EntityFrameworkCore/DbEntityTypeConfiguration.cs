@@ -114,10 +114,10 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
                 builder.Property(t => t.SuccessEvent).HasMaxLength(255).IsRequired(false).HasColumnName("SUCCESS_EVENT");
 
                 builder.Property(t => t.RuleType).IsRequired().HasColumnName("RULE_TYPE");
-                builder.Property(t => t.ErrorType).IsRequired(false).HasColumnName("ERROR_TYPE");
-                builder.Property(t => t.ErrorMessage).HasMaxLength(255).IsRequired(false).HasColumnName("ERROR_MESSAGE");
-                builder.Property(t => t.RuleExpressionType).IsRequired(false).HasColumnName("RULE_EXPRESSION_TYPE");
-                builder.Property(t => t.Expression).HasMaxLength(500).IsRequired(false).HasColumnName("EXPRESSION");
+                builder.Property(t => t.ErrorType).IsRequired().HasColumnName("ERROR_TYPE");
+                builder.Property(t => t.ErrorMessage).HasMaxLength(255).IsRequired().HasColumnName("ERROR_MESSAGE");
+                builder.Property(t => t.RuleExpressionType).IsRequired().HasColumnName("RULE_EXPRESSION_TYPE");
+                builder.Property(t => t.Expression).HasMaxLength(500).IsRequired().HasColumnName("EXPRESSION");
 
                 builder.HasMany(t => t.Constraints)
                 .WithOne()
@@ -183,7 +183,7 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
                 builder.Property(t => t.Id).IsRequired().HasColumnName("ID");
                 builder.Property(t => t.Title).IsRequired().HasMaxLength(255).HasColumnName("TITLE");
                 builder.Property(t => t.Code).IsRequired().HasMaxLength(119).HasColumnName("CODE");
-                builder.Property(t => t.ParentId).IsRequired().HasColumnName("PARENT_ID");
+                builder.Property(t => t.ParentId).IsRequired(false).HasColumnName("PARENT_ID");
                 builder.Property(t => t.Order).IsRequired().HasColumnName("ORDER");
                 builder.Property(t => t.Description).IsRequired(false).HasMaxLength(500).HasColumnName("DESCRIPTION");
 

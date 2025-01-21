@@ -9,7 +9,7 @@ namespace Hx.Abp.DataQualityInspection.Domain
     public class Rule : FullAuditedEntity<Guid>
     {
         /// <summary>
-        /// 父节点Id。
+        /// 规则组Id。
         /// </summary>
         public Guid RuleGroupId { get;private set; }
 
@@ -46,22 +46,22 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <summary>
         /// 规则对应的错误级别。
         /// </summary>
-        public ErrorType? ErrorType { get; private set; }
+        public ErrorType ErrorType { get; private set; }
 
         /// <summary>
         /// 错误描述。
         /// </summary>
-        public string? ErrorMessage {  get; private set; }
+        public string ErrorMessage {  get; private set; }
 
         /// <summary>
         /// 表达式的类型。
         /// </summary>
-        public RuleExpressionType? RuleExpressionType { get; private set; }
+        public RuleExpressionType RuleExpressionType { get; private set; }
 
         /// <summary>
         /// 表达式。
         /// </summary>
-        public string? Expression { get; private set; }
+        public string Expression { get; private set; }
 
         /// <summary>
         /// 规则约束条件列表（可选）。
@@ -94,10 +94,10 @@ namespace Hx.Abp.DataQualityInspection.Domain
             string ruleName,
             string title,
             RuleType ruleType,
-            ErrorType? errorType = null,
-            string? errorMessage = null,
-            RuleExpressionType? ruleExpressionType = null,
-            string? expression = null,
+            ErrorType errorType,
+            string errorMessage,
+            RuleExpressionType ruleExpressionType,
+            string expression,
             string? successEvent = null,
             string? description = null)
         {

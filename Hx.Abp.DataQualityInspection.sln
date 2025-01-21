@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Abp.DataQualityInspectio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Abp.DataQualityInspection.Migrations", "Hx.Abp.DataQualityInspection.Migrations\Hx.Abp.DataQualityInspection.Migrations.csproj", "{00A6F64F-B477-4DB9-9163-E425F2B4872D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Abp.DataQualityInspection.Application", "Hx.Abp.DataQualityInspection.Application\Hx.Abp.DataQualityInspection.Application.csproj", "{6A2E8A38-31A1-4FDD-B263-A6AAC4DAA458}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Abp.DataQualityInspection.Application.Contracts", "Hx.Abp.DataQualityInspection.Application.Contracts\Hx.Abp.DataQualityInspection.Application.Contracts.csproj", "{E7A01A3E-39F8-4177-A6AA-C27B204FEB46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{00A6F64F-B477-4DB9-9163-E425F2B4872D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00A6F64F-B477-4DB9-9163-E425F2B4872D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00A6F64F-B477-4DB9-9163-E425F2B4872D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A2E8A38-31A1-4FDD-B263-A6AAC4DAA458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A2E8A38-31A1-4FDD-B263-A6AAC4DAA458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A2E8A38-31A1-4FDD-B263-A6AAC4DAA458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A2E8A38-31A1-4FDD-B263-A6AAC4DAA458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7A01A3E-39F8-4177-A6AA-C27B204FEB46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7A01A3E-39F8-4177-A6AA-C27B204FEB46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7A01A3E-39F8-4177-A6AA-C27B204FEB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7A01A3E-39F8-4177-A6AA-C27B204FEB46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

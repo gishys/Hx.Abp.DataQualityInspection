@@ -22,7 +22,7 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <summary>
         /// 父Id
         /// </summary>
-        public Guid ParentId { get; protected set; }
+        public Guid? ParentId { get; protected set; }
         /// <summary>
         /// 分组描述
         /// </summary>
@@ -39,12 +39,14 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// <summary>
         /// 初始化
         /// </summary>
+        /// <param name="id">主键Id</param>
         /// <param name="title">分组标题</param>
         /// <param name="code">路径枚举</param>
         /// <param name="order">分组排序</param>
         /// <param name="description">分组描述</param>
-        public RuleGroup(string title, string code, int order, string? description = null)
+        public RuleGroup(Guid id, string title, string code, int order, string? description = null)
         {
+            Id = id;
             Title = title;
             Code = code;
             Order = order;
