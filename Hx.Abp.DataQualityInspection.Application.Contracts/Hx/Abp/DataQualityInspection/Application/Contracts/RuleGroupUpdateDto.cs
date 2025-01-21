@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Hx.Abp.DataQualityInspection.Application.Contracts
 {
-    public class RuleGroupCreateDto : RuleGroupCreateOrUpdateDtoBase
+    public class RuleGroupUpdateDto : RuleGroupCreateOrUpdateDtoBase
     {
-        /// <summary>
-        /// 父Id
-        /// </summary>
-        public Guid? ParentId { get; protected set; }
+        public Guid Id { get; set; }
     }
 }

@@ -7,9 +7,11 @@ using Volo.Abp.Modularity;
 
 namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
 {
+
+    [DependsOn(typeof(HxAbpDataQualityInspectionDomainModule))]
     [DependsOn(typeof(AbpEntityFrameworkCoreModule))]
     [DependsOn(typeof(AbpEntityFrameworkCorePostgreSqlModule))]
-    internal class DataQualityInspectionModule : AbpModule
+    public class DataQualityInspectionEntityFrameworkCoreModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
@@ -20,7 +22,8 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
             });
             context.Services.AddAbpDbContext<DataQualityInspectionDbContext>(options =>
             {
-                options.AddRepository<QualityInspectionTask, QualityInspectionTask>();
+                options.AddRepository<QualityInspectionTask, QualityInspectionTaskRepository>();
+                options.AddRepository<RuleGroup, RuleGroupRepository>();
             });
             Configure<AbpDbContextOptions>(options =>
             {

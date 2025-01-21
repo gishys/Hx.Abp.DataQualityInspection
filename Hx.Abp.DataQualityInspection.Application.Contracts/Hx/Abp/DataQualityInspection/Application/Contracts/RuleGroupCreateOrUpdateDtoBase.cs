@@ -16,13 +16,5 @@ namespace Hx.Abp.DataQualityInspection.Application.Contracts
         /// 分组描述
         /// </summary>
         public string? Description { get; set; }
-        /// <summary>
-        /// 分组排序
-        /// </summary>
-        public int? Order { get; protected set; }
-        /// <summary>
-        /// 父Id
-        /// </summary>
-        public Guid? ParentId { get; protected set; }
     }
 }

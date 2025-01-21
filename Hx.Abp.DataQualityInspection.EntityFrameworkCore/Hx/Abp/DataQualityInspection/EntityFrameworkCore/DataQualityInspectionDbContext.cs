@@ -9,7 +9,7 @@ namespace Hx.Abp.DataQualityInspection.EntityFrameworkCore
     public class DataQualityInspectionDbContext(DbContextOptions<DataQualityInspectionDbContext> options) : AbpDbContext<DataQualityInspectionDbContext>(options)
     {
         public virtual DbSet<QualityInspectionTask> Weekdays { get; set; }
-
+        public virtual DbSet<RuleGroup> RuleGroups { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

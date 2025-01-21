@@ -3,10 +3,10 @@ using Hx.Abp.DataQualityInspection.Domain;
 
 namespace Hx.Abp.DataQualityInspection.Application
 {
-    public class RuleGroupAppService : DataQualityInspectionAppServiceBase
+    public class RuleGroupAppService : DataQualityInspectionAppServiceBase, IRuleGroupAppService
     {
-        public IRuleGroupRepository RuleGroupRepository { get; }
-        public RuleGroupManager RuleGroupManager { get; }
+        private IRuleGroupRepository RuleGroupRepository { get; }
+        private RuleGroupManager RuleGroupManager { get; }
         public RuleGroupAppService(IRuleGroupRepository ruleGroupRepository, RuleGroupManager ruleGroupManager)
         {
             RuleGroupRepository = ruleGroupRepository;
@@ -14,9 +14,9 @@ namespace Hx.Abp.DataQualityInspection.Application
         }
         public async virtual Task CreateAsync(RuleGroupCreateDto dto)
         {
-            //路径枚举
-            var orderNumber = await RuleGroupManager.GetMaxOrderNumberAsync(dto.ParentId);
-            var entity = new RuleGroup(GuidGenerator.Create(), dto.Title, "", orderNumber, dto.Description);
+            var orderNumber = await RuleGroupManager.GetNextOrderNumberAsync(dto.ParentId);
+            var code = await RuleGroupManager.GetNextCodeAsync(dto.ParentId);
+            var entity = new RuleGroup(GuidGenerator.Create(), dto.Title, code, orderNumber, dto.Description);
             if (dto.ParentId.HasValue)
             {
                 var parentEntity = await RuleGroupRepository.GetAsync(dto.ParentId.Value);
@@ -28,5 +28,23 @@ namespace Hx.Abp.DataQualityInspection.Application
                 await RuleGroupRepository.InsertAsync(entity);
             }
         }
+        public async virtual Task UpdateAsync(RuleGroupUpdateDto dto)
+        {
+            var entity = await RuleGroupRepository.GetAsync(dto.Id);
+            if (!string.Equals(entity.Title, dto.Title, StringComparison.OrdinalIgnoreCase))
+            {
+                entity.SetTitle(dto.Title);
+            }
+            if (!string.Equals(entity.Description, dto.Description, StringComparison.OrdinalIgnoreCase))
+            {
+                entity.SetDescription(dto.Description);
+            }
+            await RuleGroupRepository.UpdateAsync(entity);
+        }
+        public async virtual Task DeleteAsync(Guid id)
+        {
+            await RuleGroupRepository.DeleteAsync(id);
+        }
+
     }
 }

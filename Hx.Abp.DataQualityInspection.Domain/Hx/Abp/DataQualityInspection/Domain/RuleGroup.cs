@@ -35,6 +35,13 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// 一组规则
         /// </summary>
         public List<Rule> Rules { get; protected set; }
+        public void SetTitle(string title) => Title = title;
+        public void SetDescription(string? description) => Description = description;
+        public void AddChildren(RuleGroup group)
+        {
+            if (Children == null) Children = new List<RuleGroup>();
+            Children.Add(group);
+        }
         public RuleGroup() { }
         /// <summary>
         /// 初始化
@@ -112,11 +119,11 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// Example: if numbers are 4,2 then returns "00004.00002";
         /// </summary>
         /// <param name="numbers">Numbers</param>
-        public static string? CreateCode(params int[] numbers)
+        public static string CreateCode(params int[] numbers)
         {
             if (numbers.IsNullOrEmpty())
             {
-                return null;
+                throw new ArgumentNullException(nameof(numbers), "code can not be null or empty.");
             }
 
             return numbers.Select(number => number.ToString(new string('0', 5))).JoinAsString(".");
@@ -128,7 +135,7 @@ namespace Hx.Abp.DataQualityInspection.Domain
         /// </summary>
         /// <param name="parentCode">Parent code. Can be null or empty if parent is a root.</param>
         /// <param name="childCode">Child code.</param>
-        public static string AppendCode(string parentCode, string childCode)
+        public static string AppendCode(string? parentCode, string childCode)
         {
             if (childCode.IsNullOrEmpty())
             {
